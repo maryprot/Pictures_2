@@ -38,7 +38,6 @@ def desert_yellow_2():
          (left, top2, width2, height2))
 
     
-# Горы 1(верхние)
 def mountain_1(surface, coordinates):
     '''
     Рисует первые горы с координатами центра(coordinates)
@@ -100,7 +99,6 @@ def mountain_2(surface, coordinates):
              top_ellipse2,
              width_ellipse2,
              height_ellipse2))
-    
     screen.blit(surface, coordinates)
 
 
@@ -126,51 +124,49 @@ def mountain_3(surface, coordinates):
     screen.blit(surface, coordinates)
 
     
-def bird(x, y, s):
+def bird(surface, x, y, s):
     '''
     x, y: задает крайнюю левую верхнюю точку птицы
-    s: размер птицы
+    s: размер птицы 
     '''
-    x1, y1 = x + size[0] * s // 160 - s // 2, y
     # Правое крыло
-    arc(screen,
+    arc(surface,
         black,
-        (x1, y1, size[0] * s // 160, size[1] * s // 120),
+        (x + s, y, s * 2, s * 2),
         np.pi / 2,
         np.pi,
-        1 * s // 2)
+        1 * s // 4)
     # Левое крыло
-    arc(screen,
+    arc(surface,
         black,
-        (x, y, size[0] * s // 160, size[1] * s // 120),
+        (x - s, y, s * 2, s * 2),
         0,
         np.pi / 2,
-        1 * s // 2)
+        1 * s // 4)
+
+    
+def some_birds(surface, scale, coordinates):
+    '''
+    Рисует этюд из пяти аккуратно расположенных
+    разноразмерных птиц на экране surface,
+    с масштабом scale, коррдинатами левого
+    верхнего угла coordinates.
+    '''
+    bird(surface, xb_1, yb_1, scale)
+    bird(surface, xb_2, yb_2, scale)
+    bird(surface, xb_3, yb_3, scale * 2)
+    bird(surface, xb_4, yb_4, scale * 2)
+    bird(surface, xb_5, yb_5, scale * 3)
+    screen.blit(surface, coordinates)
+
 
 # ввод данных
+
 # Общие настройки
 size = (800, 600) # Размер экрана
 left = 0
 FPS = 30
-# первая часть пустыни сверху(розовая)
-height1 = size[1] * 4 // 5
-width1 = size[0]
-top1 = size[1] * 1 // 5
-# вторая часть пустыни сверху(желтая)
-height2 = size[1] * 11 // 20
-width2 = size[0]
-top2 = size[1] * 9 // 20
 
-# Параметры солнца
-sun_coordinates = (400, 100) # Координаты центра 
-radius_sun = 50 # Радиус
-# Параметры  гор
-mountain_1_scale = 1 # Масштаб первых гор
-mountain_1_coordinates = (400, 300) # Координаты центра первых гор
-mountain_2_scale = 1 # Масштаб вторых гор
-mountain_2_coordinates = (400, 400) # Координаты центра вторых гор
-mountain_3_scale = 1 # Масштаб третьих гор
-mountain_3_coordinates = (400, 600) # Координаты центра третьих гор
 # Цвета
 black = (0, 0, 0)
 darkgrey0 = (47, 79, 79)
@@ -180,11 +176,41 @@ yellow1 = (230, 230, 0)
 grey1 = (188, 143, 143)
 orange0 = (255, 140, 0)
 red0 = (178, 34, 34)
+broun = (139, 35, 255)
+
+# первая часть пустыни сверху(розовая)
+height1 = size[1] * 4 // 5
+width1 = size[0]
+top1 = size[1] * 1 // 5
+
+# вторая часть пустыни сверху(желтая)
+height2 = size[1] * 11 // 20
+width2 = size[0]
+top2 = size[1] * 9 // 20
+
+# Параметры солнца
+sun_coordinates = (400, 100) # Координаты центра 
+radius_sun = 50 # Радиус
+
+# Параметры  гор
+mountain_1_scale = 1 # Масштаб первых гор
+mountain_1_coordinates = (400, 300) # Координаты центра первых гор
+mountain_2_scale = 1 # Масштаб вторых гор
+mountain_2_coordinates = (400, 400) # Координаты центра вторых гор
+mountain_3_scale = 1 # Масштаб третьих гор
+mountain_3_coordinates = (400, 600) # Координаты середины подножья третих гор
+
+# Первый полигон(серая часть пустыни)
+x1_1, y1_1 = 0, size[1] * 33//48
+x2_1, y2_1 = size[0], size[1] * 29//48 
+x3_1, y3_1 = size[0], size[1] 
+x4_1, y4_1 = 0, size[1]
 
 # Горы 1(верхние)
 mountain_1_size = (int(size[0] * mountain_1_scale), # Задаются размеры экрана, на
                    int(size[1] * mountain_1_scale)) # котором изображаются первые горы. 
-center_1 = (mountain_1_size[0] // 50, mountain_1_size[1]*2 // 5)
+center_1 = (mountain_1_size[0] // 50,
+            mountain_1_size[1]*2 // 5)
 radius_1 = mountain_1_size[0] // 30
 x1_2, y1_2 = 0, mountain_1_size[1] // 2
 x2_2, y2_2 = mountain_1_size[0] // 40, mountain_1_size[1] * 17//40
@@ -227,11 +253,7 @@ x12_3, y12_3 = mountain_2_size[0] * 45//50, mountain_2_size[1] * 167//340
 x13_3, y13_3 = mountain_2_size[0] * 24//25, mountain_2_size[1] * 162//340
 x14_3, y14_3 = mountain_2_size[0] * 25//25, mountain_2_size[1] * 9//20
 x15_3, y15_3 = mountain_2_size[0], mountain_2_size[1] * 3//5
-# Первый полигон(серая часть пустыни)
-x1_1, y1_1 = 0, size[1] * 36//48
-x2_1, y2_1 = size[0], size[1] * 35//48 
-x3_1, y3_1 = size[0], size[1] 
-x4_1, y4_1 = 0, size[1]
+
 # Горы 3(нижние)
 mountain_3_size = (int(size[0] * mountain_3_scale), # Задаются размеры экрана, на
                    int(size[1] * mountain_3_scale)) # котором изображаются первые горы. 
@@ -247,50 +269,69 @@ x9_4, y9_4 = mountain_3_size[0] * 23//25, mountain_3_size[1] * 220// 340
 x10_4, y10_4 = mountain_3_size[0] * 25//25, mountain_3_size[1] * 210//340
 x11_4, y11_4 = mountain_3_size[0], mountain_3_size[1]
 x12_4, y12_4 = mountain_3_size[0] * 0, mountain_3_size[1]
-# Птицы(координаты и размеры)
-xb_1, yb_1, sizeb_1 = size[0] // 3, size[1] // 3, 10
-xb_2, yb_2, sizeb_2 = size[0] // 4, size[1] // 4, 8
-xb_3, yb_3, sizeb_3 = size[0] // 3, size[1] // 4, 9
-xb_4, yb_4, sizeb_4 = size[0] // 2, size[1] // 3, 12
-xb_5, yb_5, sizeb_5 = size[0] // 2, size[1] // 2, 13
+
+# Птицы
+scale_for_bird = 5 # Относительный масштаб для птиц (натуральное число).
+ # Размер поля для рисования птиц.
+size_birds = (scale_for_bird * int(size[0] / 10),
+              scale_for_bird * int(size[1] / 10))
+ # Координаты левого крыла птиц в окне.
+xb_1, yb_1 = int(size_birds[0] / 4), int(size_birds[1] / 4) 
+xb_2, yb_2 = int(size_birds[0] / 3), int(size_birds[1] / 3)
+xb_3, yb_3 = int(size_birds[0] / 3), int(size_birds[1] / 2.5)
+xb_4, yb_4 = int(size_birds[0] / 2), int(size_birds[1] / 2.5)
+xb_5, yb_5 = int(size_birds[0] / 2), int(size_birds[1] / 2)
+coordinates_b1 = (100, 100) # Координаты левого угла первого этюда с птицами
+coordinates_b2 = (400, 350) # Координаты левого угла второго этюда с птицами
 
 # Основная программа
 screen = pygame.display.set_mode(size) # Создаем основной экран с размерами size.
-screen.fill(yellow0) # Рисуется небо.
+screen.fill(yellow0) # Рисуем небо.
 desert_pink() # Рисуется розовая пустыня.
 desert_yellow_2() # Рисуется желтая пустыня.
 
-# Рисуем солнце.
-sun_surface = pygame.Surface((radius_sun * 2, radius_sun * 2), pygame.SRCALPHA, 32) # Создаем доп.экран для солнышка.
+# Создаем доп.экран для солнышка.
+sun_surface = pygame.Surface((radius_sun * 2, radius_sun * 2),
+                             pygame.SRCALPHA, 32) 
 sun_surface = sun_surface.convert_alpha()
 sun_surface.set_alpha(0)
+# Рисуем солнце.
 sun(sun_surface, sun_coordinates, radius_sun)
 
-# Рисуем первые горы.
-mountain_1_surface = pygame.Surface(mountain_1_size, pygame.SRCALPHA, 32) # Создаем доп.экран размера mountain_1_size для первых гор.
+# Рисуем горы.
+# Создаем доп.экран размера mountain_1_size для первых гор.
+mountain_1_surface = pygame.Surface(mountain_1_size, pygame.SRCALPHA, 32) 
 mountain_1_surface = mountain_1_surface.convert_alpha()
 mountain_1_surface.set_alpha(0)
-mountain_1(mountain_1_surface, (int(mountain_1_coordinates[0] - (mountain_1_size[0])/2), # Рисуем первые горы c координатами
-                                int(mountain_1_coordinates[1] - (mountain_1_size[1])/2))) #  центра гор mountain_1_coordinates.
+# Рисуем первые горы c координатами центра гор mountain_1_coordinates.
+mountain_1(mountain_1_surface, (int(mountain_1_coordinates[0] - (mountain_1_size[0])/2), 
+                                int(mountain_1_coordinates[1] - (mountain_1_size[1])/2)))
 
-# Рисуем вторые горы.
-mountain_2_surface = pygame.Surface(mountain_2_size, pygame.SRCALPHA, 32) # Создаем доп.экран размера mountain_2_size для вторых гор.
+# Создаем доп.экран размера mountain_2_size для вторых гор.
+mountain_2_surface = pygame.Surface(mountain_2_size, pygame.SRCALPHA, 32) 
 mountain_2_surface = mountain_2_surface.convert_alpha()
 mountain_2_surface.set_alpha(0)
-mountain_2(mountain_2_surface, (int(mountain_2_coordinates[0] - (mountain_2_size[0])/2), # Рисуем вторые горы c координатами
-                                int(mountain_2_coordinates[1]  - 50 - (mountain_2_size[1])/2))) #  центра гор mountain_2_coordinates.
-desert_grey()# Рисуется серая пустыня.
-# Рисуем третьи горы.
-mountain_3_surface = pygame.Surface(mountain_3_size, pygame.SRCALPHA, 32) # Создаем доп.экран размера mountain_3_size для третьих гор.
+# Рисуем вторые горы c координатами центра гор mountain_2_coordinates.
+mountain_2(mountain_2_surface, (int(mountain_2_coordinates[0] - (mountain_2_size[0])/2), 
+                                int(mountain_2_coordinates[1] - 100 - (mountain_2_size[1])/2)))
+
+desert_grey() # Рисуется серая пустыня.
+
+# Создаем доп.экран размера mountain_3_size для третьих гор.
+mountain_3_surface = pygame.Surface(mountain_3_size, pygame.SRCALPHA, 32)
 mountain_3_surface = mountain_3_surface.convert_alpha()
 mountain_3_surface.set_alpha(0)
-mountain_3(mountain_3_surface, (int(mountain_3_coordinates[0] - (mountain_3_size[0])/2), # Рисуем третие горы c координатами
-                                int(mountain_3_coordinates[1]  - mountain_3_size[1]))) #  центра гор mountain_3_coordinates.
-bird(xb_1, yb_1, sizeb_1)
-bird(xb_2, yb_2, sizeb_2)
-bird(xb_3, yb_3, sizeb_3)
-bird(xb_4, yb_4, sizeb_4)
-bird(xb_5, yb_5, sizeb_5)
+
+# Рисуем третие горы c координатами центра гор mountain_3_coordinates.
+mountain_3(mountain_3_surface, (int(mountain_3_coordinates[0] - (mountain_3_size[0])/2), 
+                                int(mountain_3_coordinates[1]  - mountain_3_size[1])))
+
+# Рисуем птиц
+birds_surface = pygame.Surface (size_birds, pygame.SRCALPHA, 32)
+birds_surface = birds_surface.convert_alpha()
+birds_surface.set_alpha(0)
+some_birds(birds_surface, scale_for_bird, coordinates_b1)  
+some_birds(birds_surface, scale_for_bird , coordinates_b2)
 
 
 pygame.display.update()
